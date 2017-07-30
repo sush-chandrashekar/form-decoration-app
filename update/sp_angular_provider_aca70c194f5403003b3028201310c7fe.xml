@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_angular_provider">
+    <sp_angular_provider action="INSERT_OR_UPDATE">
+        <name>gFormCapture</name>
+        <script><![CDATA[function gFormCapture ($timeout, decoratedFormManager) {
+	var link = function (scope, elem, attrs, spModel) {
+		var isolatedScope;
+		
+		$timeout(function() {
+			isolatedScope = elem.isolateScope();
+			
+			var index;
+			
+			if (typeof scope.$index !== 'undefined') {
+				index = scope.$index;
+			} else {
+				index = findIndexInParents();
+			}
+			
+			function findIndexInParents() {
+				
+				var parent = scope.$parent;
+
+					while (typeof parent === 'object') {
+						
+						if (typeof parent.$index !== 'undefined') {
+							return parent.$index;
+						}
+						parent = parent.$parent;
+					}
+					return null;
+				}
+			
+			decoratedFormManager.register(
+				index,
+				isolatedScope.getGlideForm(),
+				isolatedScope.formModel
+			);
+			
+		},0);
+	};
+	
+	return {
+		link: link,
+		require: 'spModel'
+	};
+}]]></script>
+        <sys_class_name>sp_angular_provider</sys_class_name>
+        <sys_created_by>dylan.lindgren</sys_created_by>
+        <sys_created_on>2017-07-30 10:15:44</sys_created_on>
+        <sys_id>aca70c194f5403003b3028201310c7fe</sys_id>
+        <sys_mod_count>13</sys_mod_count>
+        <sys_name>gFormCapture</sys_name>
+        <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
+        <sys_update_name>sp_angular_provider_aca70c194f5403003b3028201310c7fe</sys_update_name>
+        <sys_updated_by>dylan.lindgren</sys_updated_by>
+        <sys_updated_on>2017-07-30 10:44:08</sys_updated_on>
+        <type>directive</type>
+    </sp_angular_provider>
+</record_update>

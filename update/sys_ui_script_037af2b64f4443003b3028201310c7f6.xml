@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_script">
+    <sys_ui_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description/>
+        <global>false</global>
+        <name>x_snc_formdec.formDec</name>
+        <script><![CDATA[angular.module('formDec', [])
+.directive('fdFormField', function ($compile) {
+	
+	var link = function (scope, elem, attrs, ctrl) {
+		
+		scope.hideSpFormField = true;
+		
+		var formModel = ctrl[0].getFormModel();
+		
+		var el = angular.element("<" + formModel._decorators[scope.field.name] + "></" + formModel._decorators[scope.field.name] + ">");
+		elem.find('.fd-form-field').append(el);
+		$compile(el)(scope);
+	};
+	
+	var template = '<div class="fd-form-field"></div>';
+	
+	var controller = function ($element, $scope) {
+		var c = this;
+		var field = $scope.field;
+
+		c.showEdit = false;
+		c.hasError = true;
+		c.hasChanged = false;
+
+		c.clearError = function () {
+			c.hasError = false;
+		};
+
+		extendField($scope.field);
+
+		if (!field)
+			throw "spFormField used without providing a field.";
+
+		function extendField(field) {
+			var glideField = glideFormFieldFactory.create(field);
+			field.isReadonly = glideField.isReadonly;
+			field.stagedValue = field.value;
+
+			$scope.getGlideForm().$private.events.on("change", function(fieldName, oldValue, newValue) {
+				if (fieldName === field.name)
+					field.stagedValue = newValue;
+			});
+
+			field.isMandatory = function() {
+				return !glideField.isReadonly() && glideField.isMandatory();
+			};
+			field.mandatory_filled = function() {
+				return glideFormFieldFactory.hasValue(field, field.stagedValue);
+			};
+		}
+
+		c.stagedValueChange = function() {
+			$scope.$emit('sp.spFormField.stagedValueChange', null);
+		};
+
+		c.fieldValue = function(newValue, displayValue) {
+			c.hasChanged = true;
+			if (!field.readonly && angular.isDefined(newValue)) {
+				$scope.getGlideForm().setValue(field.name, newValue, displayValue);
+			}
+			return field.value;
+		};
+	};
+	
+	return {
+		link: link,
+		scope: {
+			field: '=',
+			formModel: '=',
+			getGlideForm: '&glideForm'
+		},
+		restrict: 'E',
+		template: template,
+		controller: controller,
+		require: ['^formDec', '^spModel']
+	};
+})
+.directive('formDec', function () {
+	
+	var link = function (scope, elem, attrs, spModelCtrl) {
+		scope.formModel = elem.isolateScope().formModel;
+	};
+	
+	var controller = function ($scope) {
+		
+		this.getFormModel = function () {
+			return $scope.formModel;
+		};
+		
+	};
+	
+	return {
+		link: link,
+		restrict: 'A',
+		require: 'spModel',
+		controller: controller
+	};
+});]]></script>
+        <script_name>formDec</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>dylan.lindgren</sys_created_by>
+        <sys_created_on>2017-07-23 04:53:00</sys_created_on>
+        <sys_id>037af2b64f4443003b3028201310c7f6</sys_id>
+        <sys_mod_count>41</sys_mod_count>
+        <sys_name>x_snc_formdec.formDec</sys_name>
+        <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
+        <sys_update_name>sys_ui_script_037af2b64f4443003b3028201310c7f6</sys_update_name>
+        <sys_updated_by>dylan.lindgren</sys_updated_by>
+        <sys_updated_on>2017-07-27 07:11:08</sys_updated_on>
+        <use_scoped_format>false</use_scoped_format>
+    </sys_ui_script>
+</record_update>

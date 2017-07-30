@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_formdec.FormDecoratorAPI</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>FormDecoratorAPI</name>
+        <script><![CDATA[var FormDecoratorAPI = Class.create();
+FormDecoratorAPI.prototype = {
+	
+    initialize: function($sp) {
+		this.$sp = $sp;
+    },
+	
+	getDecoratedForm: function (table, sys_id, encodedQuery, view) {
+		
+		var portal = this.$sp.getPortalRecord();
+		
+		var form = this.$sp.getForm(table, sys_id, encodedQuery, view);
+		form._decorators = {};
+		
+		var heirarchy = new GlideTableHierarchy(table).getHierarchy(); 
+		
+		var gr = new GlideRecord('x_snc_formdec_decorator');
+		gr.addQuery('field.name', 'IN', heirarchy);
+		gr.addQuery('portal', portal.getUniqueValue())
+			.addOrCondition('portal', '');
+		gr.query();
+		
+		while (gr.next()) {
+			var directive = gr.directive.getRefRecord().spinal_case.toString();
+			var fieldName = gr.field.getRefRecord().element;
+			form._decorators[fieldName] = directive;
+		}
+		
+		return form;
+	},
+	
+	getDecoratedCatItem: function (sys_id) {
+		
+		var portal = this.$sp.getPortalRecord();
+		var catItem = this.$sp.getCatalogItem(sys_id);
+		catItem._decorators = {};
+		
+		var variables = [];
+		
+		for (var key in catItem._fields) {
+			variables.push(catItem._fields[key].sys_id);
+		}
+		
+		var gr = new GlideRecord('x_snc_formdec_decorator');
+		gr.addQuery('variable', 'IN', variables.join(','));
+		gr.addQuery('portal', portal.getUniqueValue())
+			.addOrCondition('portal', '');
+		gr.query();
+		
+		while (gr.next()) {
+			var directive = gr.directive.getRefRecord().spinal_case.toString();
+			catItem._decorators["IO:" + gr.getValue('variable')] = directive;
+		}
+		
+		return catItem;
+		
+	},
+
+    type: 'FormDecoratorAPI'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>dylan.lindgren</sys_created_by>
+        <sys_created_on>2017-07-23 11:45:30</sys_created_on>
+        <sys_id>f787d4034f0843003b3028201310c78c</sys_id>
+        <sys_mod_count>37</sys_mod_count>
+        <sys_name>FormDecoratorAPI</sys_name>
+        <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
+        <sys_update_name>sys_script_include_f787d4034f0843003b3028201310c78c</sys_update_name>
+        <sys_updated_by>dylan.lindgren</sys_updated_by>
+        <sys_updated_on>2017-07-27 06:08:41</sys_updated_on>
+    </sys_script_include>
+</record_update>

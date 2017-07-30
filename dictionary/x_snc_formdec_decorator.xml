@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Decorator" max_length="40" name="x_snc_formdec_decorator" type="collection">
+        <element display="true" label="Directive" mandatory="true" max_length="32" name="directive" reference="x_snc_formdec_directive" type="reference"/>
+        <element label="Field" max_length="32" name="field" reference="sys_dictionary" reference_qual="internal_typeISNOTEMPTY^internal_type!=collection^EQ" reference_qual_condition="internal_typeISNOTEMPTY^internal_type!=collection^EQ" type="reference"/>
+        <element label="Portal" max_length="32" name="portal" reference="sp_portal" type="reference"/>
+        <element label="Variable" max_length="32" name="variable" reference="item_option_new" type="reference"/>
+        <index name="index">
+            <element name="field"/>
+        </index>
+        <index name="index2">
+            <element name="variable"/>
+        </index>
+        <index name="index3">
+            <element name="portal"/>
+        </index>
+        <index name="index4">
+            <element name="directive"/>
+        </index>
+    </element>
+</database>

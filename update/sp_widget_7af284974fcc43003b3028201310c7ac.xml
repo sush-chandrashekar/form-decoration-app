@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function(spUtil, $scope, $http, $location) {
+	var c = this;
+	
+	console.log(c.data.sc_cat_item);
+	
+	c.submitRecordProducer = function() {
+		postCatalogFormRequest().success(function(response) {
+			var a = response.result ? response.result : response.answer;
+			var n = a.number;
+			$scope.$emit("$$uiNotification", a.$$uiNotification);
+			$scope.$emit("$sp.sc_cat_item.submitted", a);
+			if (n) {
+				console.log(n, a.table, a.sys_id, a.redirect_to, a.redirect_portal_url);
+				$location.search('id=bn_navigator&sys_id=' + a.sys_id);
+			}
+			$scope.submitting = false;
+		}).error(function(response) {
+			console.log(response);
+		});
+	}
+
+
+	function postCatalogFormRequest() {
+		$scope.submitted = true;
+		$scope.submitting = true;
+		var requestUrl;
+		var reqData = {};
+		if (c.data.sc_cat_item.sys_class_name === "sc_cat_item_producer") {
+			requestUrl = '/api/sn_sc/v1/servicecatalog/items/' + c.data.sc_cat_item.sys_id + '/submit_producer';
+			for(var obj in c.data.sc_cat_item._fields)
+				reqData[c.data.sc_cat_item._fields[obj].variable_name] = c.data.sc_cat_item._fields[obj].value;
+			reqData = {'variables' : reqData, 'get_portal_messages': 'true'};
+		}
+		else {
+			requestUrl = spUtil.getURL('sc_cat_item');
+			reqData = c.data.sc_cat_item;
+		}
+		return $http.post(requestUrl, reqData);
+	}
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>h3 {
+  margin: 20px 0;
+}
+
+.drp-actions {
+  margin: 30px 0 0 0;
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>decorated_rp</id>
+        <internal>false</internal>
+        <link/>
+        <name>Decorated Record Producer</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	
+	data.sysId = $sp.getParameter('sys_id') || '';
+	
+	if (data.sysId === '') {
+		gs.addErrorMessage('No Sys ID supplied');
+	}
+	
+	var $fd = new FormDecoratorAPI($sp);
+	data.sc_cat_item = $fd.getDecoratedCatItem(data.sysId);
+
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>dylan.lindgren</sys_created_by>
+        <sys_created_on>2017-07-24 04:47:07</sys_created_on>
+        <sys_id>7af284974fcc43003b3028201310c7ac</sys_id>
+        <sys_mod_count>47</sys_mod_count>
+        <sys_name>Decorated Record Producer</sys_name>
+        <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
+        <sys_update_name>sp_widget_7af284974fcc43003b3028201310c7ac</sys_update_name>
+        <sys_updated_by>dylan.lindgren</sys_updated_by>
+        <sys_updated_on>2017-07-28 06:15:49</sys_updated_on>
+        <template><![CDATA[<div>
+	<sp-model form-dec
+            form-model="c.data.sc_cat_item"
+            template-url="decorated-rp"
+            mandatory="true"></sp-model>
+</div>]]></template>
+    </sp_widget>
+</record_update>
