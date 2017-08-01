@@ -21,21 +21,21 @@
         <roles/>
         <script><![CDATA[(function() {
 	var $fd = new FormDecoratorAPI($sp);
-	data.form = $fd.getDecoratedForm(options.table, '-1', null, options.view);
+	data.form = $fd.getDecoratedForm(options.table, options.sys_id, null, options.view);
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
         <sys_created_by>dylan.lindgren</sys_created_by>
         <sys_created_on>2017-07-23 06:58:35</sys_created_on>
         <sys_id>be775ff24f8443003b3028201310c739</sys_id>
-        <sys_mod_count>19</sys_mod_count>
+        <sys_mod_count>20</sys_mod_count>
         <sys_name>Decorated Form</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sp_widget_be775ff24f8443003b3028201310c739</sys_update_name>
         <sys_updated_by>dylan.lindgren</sys_updated_by>
-        <sys_updated_on>2017-07-30 10:17:48</sys_updated_on>
+        <sys_updated_on>2017-08-01 02:11:50</sys_updated_on>
         <template><![CDATA[<div>
 	<sp-model form-dec
               g-form-capture
