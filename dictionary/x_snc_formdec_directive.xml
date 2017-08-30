@@ -2,9 +2,9 @@
 <database>
     <element label="Directive" max_length="40" name="x_snc_formdec_directive" type="collection">
         <element label="Description" max_length="1024" name="description" type="string"/>
-        <element display="true" label="Name (camel case)" mandatory="true" max_length="40" name="name" type="string"/>
+        <element display="true" label="Name (camel-case)" mandatory="true" max_length="40" name="name" type="string"/>
         <element label="Screenshot" max_length="40" name="screenshot" type="user_image"/>
-        <element label="Name (snake case)" max_length="40" name="snake_case" read_only="true" type="string"/>
+        <element label="Name (snake-case)" max_length="40" name="snake_case" read_only="true" type="string"/>
         <element label="Name (spinal-case)" max_length="40" name="spinal_case" read_only="true" type="string"/>
     </element>
 </database>
