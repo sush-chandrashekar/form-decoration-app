@@ -55,7 +55,7 @@
         <docs/>
         <field_list/>
         <has_preview>false</has_preview>
-        <id>decorated_rp</id>
+        <id>pe-decorated-rp</id>
         <internal>false</internal>
         <link/>
         <name>Decorated Record Producer</name>
@@ -80,19 +80,19 @@
         <sys_created_on>2017-07-24 04:47:07</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>7af284974fcc43003b3028201310c7ac</sys_id>
-        <sys_mod_count>49</sys_mod_count>
+        <sys_mod_count>51</sys_mod_count>
         <sys_name>Decorated Record Producer</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sp_widget_7af284974fcc43003b3028201310c7ac</sys_update_name>
-        <sys_updated_by>dylan.lindgren</sys_updated_by>
-        <sys_updated_on>2017-07-31 06:57:22</sys_updated_on>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-08-31 02:08:52</sys_updated_on>
         <template><![CDATA[<div>
 	<sp-model form-dec
             form-model="c.data.sc_cat_item"
-            template-url="decorated-rp"
+            template-url="pe-decorated-rp"
             mandatory="true"></sp-model>
 </div>]]></template>
     </sp_widget>

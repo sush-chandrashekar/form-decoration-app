@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <record_update table="sp_ng_template">
     <sp_ng_template action="INSERT_OR_UPDATE">
-        <id>decorated-form</id>
+        <id>pe-decorated-form</id>
         <sp_widget display_value="Decorated Form">be775ff24f8443003b3028201310c739</sp_widget>
         <sys_class_name>sp_ng_template</sys_class_name>
         <sys_created_by>dylan.lindgren</sys_created_by>
         <sys_created_on>2017-07-23 07:03:37</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>5b8897764f8443003b3028201310c74f</sys_id>
-        <sys_mod_count>13</sys_mod_count>
-        <sys_name>decorated-form</sys_name>
+        <sys_mod_count>20</sys_mod_count>
+        <sys_name>pe-decorated-form</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sp_ng_template_5b8897764f8443003b3028201310c74f</sys_update_name>
-        <sys_updated_by>dylan.lindgren</sys_updated_by>
-        <sys_updated_on>2017-07-30 07:11:56</sys_updated_on>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-08-31 04:10:15</sys_updated_on>
         <template><![CDATA[<div>
   <div>
     <div ng-if="formModel._sections == null || formModel._sections.length == 0" ng-init="execItemScripts()"></div>
@@ -38,8 +38,8 @@
                         <hr class="sp_label_hr"></hr>
                     </div>
                     <div ng-switch-when="field" ng-if="formModel._fields[f.name]" ng-show="formModel._fields[f.name].visible">
-                    	<sp-form-field ng-if="!formModel._decorators[f.name]" form-model="formModel" field="formModel._fields[f.name]" glide-form="getGlideForm()"></sp-form-field>
-                   		<fd-form-field ng-if="formModel._decorators[f.name]" form-model="formModel" field="formModel._fields[f.name]" glide-form="getGlideForm()"></fd-form-field>
+                    	<sp-form-field ng-if="!formModel._fields[f.name].directive" form-model="formModel" field="formModel._fields[f.name]" glide-form="getGlideForm()"></sp-form-field>
+                   		<fd-form-field ng-if="formModel._fields[f.name].directive" form-model="formModel" field="formModel._fields[f.name]" glide-form="getGlideForm()"></fd-form-field>
     								</div>
                     <div ng-switch-when="container" ng-init="containers = [f]">
                       <div ng-include src="'df-variable-layout'"></div>

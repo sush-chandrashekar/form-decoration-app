@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <record_update>
-    <sys_ui_section caption="Form Decoration test" section_id="e22a4b074ff08300ab4450af0310c7cd" sys_domain="global" table="incident" version="3" view="fd-test">
+    <sys_ui_section caption="Incident" section_id="e22a4b074ff08300ab4450af0310c7cd" sys_domain="global" table="incident" version="3" view="fd-test">
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>active</element>
             <position>0</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2017-08-30 07:29:18</sys_created_on>
-            <sys_id>c3eacf074ff08300ab4450af0310c74e</sys_id>
+            <sys_created_on>2017-08-31 04:29:10</sys_created_on>
+            <sys_id>d64baf5f4ff8830022f40ccf0310c730</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
-            <sys_ui_section caption="Form Decoration test" display_value="Form Decoration test" name="incident" sys_domain="global" view="97a947074ff08300ab4450af0310c76c">e22a4b074ff08300ab4450af0310c7cd</sys_ui_section>
+            <sys_ui_section caption="Incident" display_value="Incident" name="incident" sys_domain="global" view="97a947074ff08300ab4450af0310c76c">e22a4b074ff08300ab4450af0310c7cd</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2017-08-30 07:29:18</sys_updated_on>
+            <sys_updated_on>2017-08-31 04:29:10</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -19,46 +19,60 @@
             <element>short_description</element>
             <position>1</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2017-08-30 07:29:18</sys_created_on>
-            <sys_id>47eacf074ff08300ab4450af0310c74e</sys_id>
+            <sys_created_on>2017-08-31 04:29:10</sys_created_on>
+            <sys_id>9e4baf5f4ff8830022f40ccf0310c730</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
-            <sys_ui_section caption="Form Decoration test" display_value="Form Decoration test" name="incident" sys_domain="global" view="97a947074ff08300ab4450af0310c76c">e22a4b074ff08300ab4450af0310c7cd</sys_ui_section>
+            <sys_ui_section caption="Incident" display_value="Incident" name="incident" sys_domain="global" view="97a947074ff08300ab4450af0310c76c">e22a4b074ff08300ab4450af0310c7cd</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2017-08-30 07:29:18</sys_updated_on>
+            <sys_updated_on>2017-08-31 04:29:10</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>made_sla</element>
+            <element>.split</element>
             <position>2</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2017-08-30 07:29:18</sys_created_on>
-            <sys_id>c7eacf074ff08300ab4450af0310c74e</sys_id>
+            <sys_created_on>2017-08-31 04:29:10</sys_created_on>
+            <sys_id>124baf5f4ff8830022f40ccf0310c731</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
-            <sys_ui_section caption="Form Decoration test" display_value="Form Decoration test" name="incident" sys_domain="global" view="97a947074ff08300ab4450af0310c76c">e22a4b074ff08300ab4450af0310c7cd</sys_ui_section>
+            <sys_ui_section caption="Incident" display_value="Incident" name="incident" sys_domain="global" view="97a947074ff08300ab4450af0310c76c">e22a4b074ff08300ab4450af0310c7cd</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2017-08-30 07:29:18</sys_updated_on>
+            <sys_updated_on>2017-08-31 04:29:10</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>made_sla</element>
+            <position>3</position>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2017-08-31 04:29:10</sys_created_on>
+            <sys_id>924baf5f4ff8830022f40ccf0310c731</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Incident" display_value="Incident" name="incident" sys_domain="global" view="97a947074ff08300ab4450af0310c76c">e22a4b074ff08300ab4450af0310c7cd</sys_ui_section>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2017-08-31 04:29:10</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>reassignment_count</element>
-            <position>3</position>
+            <position>4</position>
             <sys_created_by>admin</sys_created_by>
-            <sys_created_on>2017-08-30 07:29:18</sys_created_on>
-            <sys_id>4beacf074ff08300ab4450af0310c74e</sys_id>
+            <sys_created_on>2017-08-31 04:29:10</sys_created_on>
+            <sys_id>164baf5f4ff8830022f40ccf0310c731</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
-            <sys_ui_section caption="Form Decoration test" display_value="Form Decoration test" name="incident" sys_domain="global" view="97a947074ff08300ab4450af0310c76c">e22a4b074ff08300ab4450af0310c7cd</sys_ui_section>
+            <sys_ui_section caption="Incident" display_value="Incident" name="incident" sys_domain="global" view="97a947074ff08300ab4450af0310c76c">e22a4b074ff08300ab4450af0310c7cd</sys_ui_section>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2017-08-30 07:29:18</sys_updated_on>
+            <sys_updated_on>2017-08-31 04:29:10</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
-            <caption>Form Decoration test</caption>
+            <caption>Incident</caption>
             <header>false</header>
             <name>incident</name>
             <roles/>
@@ -69,8 +83,8 @@
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
             <sys_id>e22a4b074ff08300ab4450af0310c7cd</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_name>Form Decoration test</sys_name>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_name>Incident</sys_name>
             <sys_overrides/>
             <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
             <sys_policy/>
@@ -78,7 +92,7 @@
             <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
             <sys_update_name>sys_ui_section_e22a4b074ff08300ab4450af0310c7cd</sys_update_name>
             <sys_updated_by>admin</sys_updated_by>
-            <sys_updated_on>2017-08-30 07:25:59</sys_updated_on>
+            <sys_updated_on>2017-08-31 04:57:46</sys_updated_on>
             <sys_user/>
             <title>false</title>
             <view display_value="Form Decoration test" name="fd-test">97a947074ff08300ab4450af0310c76c</view>

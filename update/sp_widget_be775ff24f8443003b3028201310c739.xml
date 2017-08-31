@@ -5,23 +5,48 @@
   var c = this;
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css/>
+        <css>$fd-ff-margin: 10px 10px 10px 10px !default;
+
+.pe-decorated-form {
+  
+  .fd-form-field {
+    margin: $fd-ff-margin;
+  }
+  
+  .df-ui-action {
+    display: inline-block;
+  }
+
+}</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
         <docs/>
         <field_list/>
         <has_preview>false</has_preview>
-        <id>decorated-form</id>
+        <id>pe-decorated-form</id>
         <internal>false</internal>
         <link/>
         <name>Decorated Form</name>
-        <option_schema/>
+        <option_schema>[{"displayValue":"Table","hint":"Table (leave blank to use URL parameter 'table')","name":"table","label":"Table","type":"reference","value":"sys_db_object","ed":{"reference":"sys_db_object"}}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
+	
+	data.debug = $sp.getParameter('debug') === 'true';
+	
+	data.table = options.table || $sp.getParameter('table');
+	
+	if (!data.table) {
+		gs.addErrorMessage('<strong>Error:</strong> there was no table name supplied for this form');
+	}
+	
+	data.sys_id = options.sys_id || $sp.getParameter('sys_id') || '-1';
+	data.view = options.view || $sp.getParameter('view') || 'service_portal';
+	
 	var $fd = new FormDecoratorAPI($sp);
-	data.form = $fd.getDecoratedForm(options.table, options.sys_id, null, options.view);
+	data.form = $fd.getDecoratedForm(data.table, data.sys_id, null, data.view);
+	
 })();]]></script>
         <servicenow>false</servicenow>
         <sys_class_name>sp_widget</sys_class_name>
@@ -29,21 +54,43 @@
         <sys_created_on>2017-07-23 06:58:35</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>be775ff24f8443003b3028201310c739</sys_id>
-        <sys_mod_count>20</sys_mod_count>
+        <sys_mod_count>68</sys_mod_count>
         <sys_name>Decorated Form</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sp_widget_be775ff24f8443003b3028201310c739</sys_update_name>
-        <sys_updated_by>dylan.lindgren</sys_updated_by>
-        <sys_updated_on>2017-08-01 02:11:50</sys_updated_on>
-        <template><![CDATA[<div>
-	<sp-model form-dec
-              g-form-capture
-              form-model="c.data.form"
-              template-url="decorated-form"
-              mandatory="true"></sp-model>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-08-31 04:55:37</sys_updated_on>
+        <template><![CDATA[<div class="pe-decorated-form">
+	<sp-model g-form-capture
+            form-model="c.data.form"
+            template-url="pe-decorated-form"
+            mandatory="true"></sp-model>
+  <!-- UI Actions -->
+  <div class="df-ui-action" ng-repeat="action in c.data.form._ui_actions">
+    <button>{{::action.name}}</button>
+  </div>
+  
+  <div ng-if="c.data.debug">
+    <h1>Debug</h1>
+    <div class="row">
+      <div class="col-sm-6">
+        <table class="table">
+          <thead>
+            <tr><th>Column Name</th><th>Directive</th></tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(key, value) in c.data.form._fields">
+              <td>{{key}}</td><td>{{value.directive}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+  </div>
 </div>]]></template>
     </sp_widget>
 </record_update>

@@ -6,37 +6,53 @@
         <global>false</global>
         <name>x_snc_formdec.formDec</name>
         <script><![CDATA[angular.module('formDec', [])
+.controller('fdFieldCtrl', function ($element, $scope) {
+	'use strict';
+	
+	$scope.focusHandler = function() {
+		console.log('hasFocus');
+		$scope.hasFocus = true;
+		$scope.$emit("sp.spFormField.focus", $element, $scope.inputField);
+	};
+
+	$scope.blurHandler = function() {
+		console.log('hasBlur');
+		$scope.fieldValue($scope.field.stagedValue);
+		$scope.hasFocus = false;
+		$scope.$emit("sp.spFormField.blur", $element, $scope.inputField);
+	};
+	
+})
 .directive('fdFormField', function ($compile) {
+	'use strict';
 	
 	var link = function (scope, elem, attrs, ctrl) {
 		
-		scope.hideSpFormField = true;
+		var directive = scope.formModel._fields[scope.field.name].directive;
 		
-		var formModel = ctrl[0].getFormModel();
-		
-		var el = angular.element("<" + formModel._decorators[scope.field.name] + "></" + formModel._decorators[scope.field.name] + ">");
+		var el = angular.element("<" + directive + "></" + directive + ">");
 		elem.find('.fd-form-field').append(el);
 		$compile(el)(scope);
 	};
 	
 	var template = '<div class="fd-form-field"></div>';
 	
-	var controller = function ($element, $scope) {
-		var c = this;
+	var controller = function ($scope, $element) {
+		
 		var field = $scope.field;
 
-		c.showEdit = false;
-		c.hasError = true;
-		c.hasChanged = false;
+		$scope.showEdit = false;
+		$scope.hasError = true;
+		$scope.hasChanged = false;
 
-		c.clearError = function () {
-			c.hasError = false;
+		$scope.clearError = function () {
+			$scope.hasError = false;
 		};
 
 		extendField($scope.field);
 
 		if (!field)
-			throw "spFormField used without providing a field.";
+			throw "fdFormField used without providing a field.";
 
 		function extendField(field) {
 			var glideField = glideFormFieldFactory.create(field);
@@ -56,54 +72,34 @@
 			};
 		}
 
-		c.stagedValueChange = function() {
+		$scope.stagedValueChange = function() {
 			$scope.$emit('sp.spFormField.stagedValueChange', null);
 		};
 
-		c.fieldValue = function(newValue, displayValue) {
+		$scope.fieldValue = function(newValue, displayValue) {
 			console.log(newValue, displayValue);
 			
-			c.hasChanged = true;
+			$scope.hasChanged = true;
 			if (!field.readonly && angular.isDefined(newValue)) {
 				$scope.getGlideForm().setValue(field.name, newValue, displayValue);
 			}
 			
 			return field.value;
 		};
+		
 	};
 	
 	return {
-		link: link,
-		scope: {
-			field: '=',
-			formModel: '=',
-			getGlideForm: '&glideForm'
-		},
 		restrict: 'E',
 		template: template,
-		controller: controller,
-		require: ['^formDec', '^spModel']
-	};
-})
-.directive('formDec', function () {
-	
-	var link = function (scope, elem, attrs, spModelCtrl) {
-		scope.formModel = elem.isolateScope().formModel;
-	};
-	
-	var controller = function ($scope) {
-		
-		this.getFormModel = function () {
-			return $scope.formModel;
-		};
-		
-	};
-	
-	return {
 		link: link,
-		restrict: 'A',
-		require: 'spModel',
-		controller: controller
+		scope: {
+            field: '=',
+            formModel: '=',
+            getGlideForm: '&glideForm'
+        },
+		controller: controller,
+		require: ['^spModel']
 	};
 });]]></script>
         <script_name>formDec</script_name>
@@ -112,15 +108,15 @@
         <sys_created_on>2017-07-23 04:53:00</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>037af2b64f4443003b3028201310c7f6</sys_id>
-        <sys_mod_count>46</sys_mod_count>
+        <sys_mod_count>68</sys_mod_count>
         <sys_name>x_snc_formdec.formDec</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sys_ui_script_037af2b64f4443003b3028201310c7f6</sys_update_name>
-        <sys_updated_by>dylan.lindgren</sys_updated_by>
-        <sys_updated_on>2017-08-02 07:24:35</sys_updated_on>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-08-31 05:41:37</sys_updated_on>
         <use_scoped_format>false</use_scoped_format>
     </sys_ui_script>
 </record_update>
