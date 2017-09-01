@@ -10,9 +10,11 @@
 .directive('fdExampleIntegerField', function ($timeout) {
 	'use strict';
 	
-	var template = '<div class="fd-ex-integer" ng-class="{\'fd-ex-mandatory\': field.mandatory}"><label class="fd-ex-label" for="{{::field.name}}">{{::field.label}}</label><input type="text" name="{{::field.name}}" ng-model="field.stagedValue"/></div>';
+	var template = '<div class="fd-ex-integer" ng-class="{\'fd-ex-mandatory\': field.mandatory}"><label class="fd-ex-label" for="{{::field.name}}">{{::field.label}}</label><input type="number" name="{{::field.name}}" ng-model="field.stagedValue"/></div>';
 	
-	var link = function (scope, elem, attrs, ctrl) {
+	var link = function (scope, elem, attrs) {
+		
+		scope.field.stagedValue = parseInt(scope.field.stagedValue);
 		
 		scope.inputField = elem.find('input');
 		scope.inputField.on('focus', scope.focusHandler).on('blur', scope.blurHandler);
@@ -26,8 +28,7 @@
 	return {
 		template: template,
 		link: link,
-		controller: 'fdFieldCtrl',
-		require: ['^spModel', '^fdFormField']
+		controller: 'fdFieldCtrl'
 	};
 })
 
@@ -35,13 +36,19 @@
 .directive('fdExampleCheckboxField', function ($timeout) {
 	'use strict';
 	
-	var template = '<div class="fd-ex-checkbox" ng-class="{\'fd-ex-mandatory\': field.mandatory}"><label class="fd-ex-label" for="{{::field.name}}">{{::field.label}}</label><input type="checkbox" name="{{::field.name}}"/></div>';
-	var link = function (scope, elem, attrs, ctrl) {};
+	var template = '<div class="fd-ex-checkbox" ng-class="{\'fd-ex-mandatory\': field.mandatory}" ng-show="field.visible"><div class="fd-ex-label">&nbsp;</div><div class="row"><div class="col-xs-12"><input type="checkbox" ng-attr-id="{{::\'fd_\' + field.name}}" ng-model="field.stagedValue" ng-true-value="\'true\'" ng-false-value="\'false\'" ng-change="setField()"/><label ng-attr-for="{{::\'fd_\' + field.name}}" class="fd-ex-label"><span></span>{{::field.label}}</label></div></div></div>';
+	var link = function (scope, elem, attrs) {
+		
+		scope.setField = function () {
+			scope.blurHandler();
+		};
+		
+	};
 	
 	return {
 		template: template,
 		link: link,
-		require: ['^spModel', '^fdFormField']
+		controller: 'fdFieldCtrl'
 	};
 })
 
@@ -49,8 +56,8 @@
 .directive('fdExampleStringField', function ($timeout) {
 	'use strict';
 	
-	var template = '<div class="fd-ex-string" ng-class="{\'fd-ex-mandatory\': field.mandatory}"><label class="fd-ex-label" for="{{::field.name}}">{{::field.label}}</label><input type="text" name="{{::field.name}}" ng-model="field.stagedValue"/></div>';
-	var link = function (scope, elem, attrs, ctrl) {
+	var template = '<div class="fd-ex-string" ng-class="{\'fd-ex-mandatory\': field.mandatory}" ng-show="field.visible"><label class="fd-ex-label" for="{{::field.name}}">{{::field.label}}</label><input type="text" name="{{::field.name}}" ng-model="field.stagedValue"/></div>';
+	var link = function (scope, elem, attrs) {
 		
 		scope.inputField = elem.find('input');
 		scope.inputField.on('focus', scope.focusHandler).on('blur', scope.blurHandler);
@@ -64,8 +71,7 @@
 	return {
 		template: template,
 		link: link,
-		controller: 'fdFieldCtrl',
-		require: ['^spModel', '^fdFormField']
+		controller: 'fdFieldCtrl'
 	};
 })
 
@@ -73,25 +79,33 @@
 .directive('fdExampleYesNoField', function ($timeout) {
 	'use strict';
 	
-	var template = '<div class="fd-ex-yn" ng-class="{\'fd-ex-mandatory\': field.mandatory}"><div class="fd-ex-label">{{::field.label}}</div><input id="{{::field.name}}_yes" type="radio" name="{{::field.name}}" value="true" name="radio" ng-click="setYes()" /><label for="{{::field.name}}_yes" >Yes</label><input id="{{::field.name}}_no" type="radio" name="{{::field.name}}" value="true" name="radio" ng-click="setNo()"/><label for="{{::field.name}}_no" >No</label></div>';
-	var link = function (scope, elem, attrs, ctrl) {
+	var template = '<div class="fd-ex-yn" ng-class="{\'fd-ex-mandatory\': field.mandatory}" ng-show="field.visible"><div class="fd-ex-label">{{::field.label}}</div><div class="row"><div class="col-xs-6"><button ng-click="setYes()" ng-class="{\'fd-ex-yn-active\': fieldVal}">Yes</button></div><div class="col-xs-6"><button ng-click="setNo()" ng-class="{\'fd-ex-yn-active\': !fieldVal}">No</button></div></div></div>';
+	var link = function (scope, elem, attrs) {
+		
+		scope.fieldVal = scope.field.stagedValue == 'true';
 		
 		scope.setYes = function () {
+			scope.fieldVal = true;
 			scope.field.stagedValue = 'true';
 			scope.blurHandler();
 		};
 		
 		scope.setNo = function () {
+			scope.fieldVal = false;
 			scope.field.stagedValue = 'false';
 			scope.blurHandler();
 		};
+		
+		$timeout(function () {
+			scope.$emit("sp.spFormField.rendered", elem, scope.inputField);
+		});
+		
 	};
 	
 	return {
 		template: template,
 		link: link,
-		controller: 'fdFieldCtrl',
-		require: ['^spModel', '^fdFormField']
+		controller: 'fdFieldCtrl'
 	};
 });]]></script>
         <script_name>exampleDirectives</script_name>
@@ -100,7 +114,7 @@
         <sys_created_on>2017-07-23 06:50:37</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>e4559fb24f8443003b3028201310c7f4</sys_id>
-        <sys_mod_count>49</sys_mod_count>
+        <sys_mod_count>94</sys_mod_count>
         <sys_name>x_snc_formdec.exampleDirectives</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
@@ -108,7 +122,7 @@
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sys_ui_script_e4559fb24f8443003b3028201310c7f4</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-08-31 06:45:54</sys_updated_on>
+        <sys_updated_on>2017-09-01 05:34:47</sys_updated_on>
         <use_scoped_format>false</use_scoped_format>
     </sys_ui_script>
 </record_update>

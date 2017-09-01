@@ -12,24 +12,24 @@
         <short_description/>
         <size>md</size>
         <sp_column display_value="1">c7775ff24f8443003b3028201310c741</sp_column>
-        <sp_widget display_value="Decorated Form">be775ff24f8443003b3028201310c739</sp_widget>
+        <sp_widget display_value="Decorated Form (debug)">c15054f34ff0c300ab4450af0310c73a</sp_widget>
         <sys_class_name>sp_instance</sys_class_name>
-        <sys_created_by>dylan.lindgren</sys_created_by>
-        <sys_created_on>2017-07-23 06:58:35</sys_created_on>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-09-01 05:04:59</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
-        <sys_id>c3775ff24f8443003b3028201310c743</sys_id>
+        <sys_id>741db8734f74c300ab4450af0310c766</sys_id>
         <sys_mod_count>1</sys_mod_count>
         <sys_name/>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
-        <sys_update_name>sp_instance_c3775ff24f8443003b3028201310c743</sys_update_name>
+        <sys_update_name>sp_instance_741db8734f74c300ab4450af0310c766</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-08-31 00:44:29</sys_updated_on>
+        <sys_updated_on>2017-09-01 05:04:59</sys_updated_on>
         <title/>
         <url/>
         <widget_parameters/>
     </sp_instance>
-    <sys_translated_text action="delete_multiple" query="documentkey=c3775ff24f8443003b3028201310c743"/>
+    <sys_translated_text action="delete_multiple" query="documentkey=741db8734f74c300ab4450af0310c766"/>
 </record_update>

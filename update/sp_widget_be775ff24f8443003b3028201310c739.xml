@@ -1,23 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
-        <client_script><![CDATA[function() {
+        <client_script><![CDATA[function($scope, $timeout) {
   var c = this;
+	
+	// Grab GlideForm once it's been initialized
+	
+	var g_form;
+	
+	$scope.$on('spModel.gForm.initialized', function(e, gFormInstance) {
+		if (gFormInstance.getTableName() == $scope.data.form.table)
+			g_form = gFormInstance;
+	});
+	
+	// Trigger a UI Action
+	
+	$scope.triggerUIAction = function(action) {
+
+		$timeout(function() {
+			if (g_form) {
+				g_form.submit(action.action_name || action.sys_id);
+			}
+		});
+	}
+	
+	// Once the UI Action is complete, reload the record
+	
+	$scope.$on("spModel.uiActionComplete", function(evt, response) {
+		var sysID = (response.isInsert) ? response.sys_id : $scope.data.sys_id;
+		reloadForm($scope.data.table, sysID).then(function () {
+			$rootScope.$broadcast('sp.form.record.updated', $scope.data.form._fields);
+		});
+	});
+	
+	function reloadForm(table, sys_id){
+		var f = {};
+		$scope.data.table = f.table = table;
+		$scope.data.sys_id = f.sys_id = sys_id;
+		f.view = $scope.data.view;
+		return $scope.server.update();
+	}
+
 }]]></client_script>
         <controller_as>c</controller_as>
         <css>$fd-ff-margin: 10px 10px 10px 10px !default;
+
+$fd-ui-actions-margin: 30px 0px; !default;
+$fd-ui-actions-text-align: center !default;
+
+$fd-uia-margin: 10px !default;
+
+$fd-uia-border-radius: 8px !default;
+$fd-uia-border: 3px solid #C4D0D6 !default;
+$fd-uia-background: #fff !default;
+$fd-uia-padding: 5px 20px !default;
+$fd-uia-color: #000 !default;
+$fd-uia-min-height: 40px !default;
+$fd-uia-min-width: 40px !default;
+$fd-uia-font-size: 18px !default;
+
+$fd-uia-background-hover: #F9FDFF; !default;
+$fd-uia-border-hover: 3px solid #C4D0D6 !default;
+$fd-uia-color-hover: #000 !default;
+
+$fd-uia-primary-background: #da1a40 !default;
+$fd-uia-primary-border: 3px solid #da1a40 !default;
+$fd-uia-primary-color: #fff !default;
+
+$fd-uia-primary-background-hover: #fd3056 !default;
+$fd-uia-primary-border-hover: 3px solid #da1a40 !default;
+$fd-uia-primary-color-hover: #fff !default;
 
 .pe-decorated-form {
   
   .fd-form-field {
     margin: $fd-ff-margin;
+    min-height: 70px;
+  }
+  
+  .df-ui-actions {
+    text-align: $fd-ui-actions-text-align;
+    margin: $fd-ui-actions-margin;
   }
   
   .df-ui-action {
     display: inline-block;
+    margin: $fd-uia-margin;
+    color: $fd-uia-color;
+    font-size: $fd-uia-font-size;
   }
+  
+  .df-ui-action button {
+    cursor: pointer;
+    
+    border: $fd-uia-border;
+    border-radius: $fd-uia-border-radius;
+    background: $fd-uia-background;
+    padding: $fd-uia-padding;
+    min-height: $fd-uia-min-height;
+    min-width: $fd-uia-min-width;
+  }
+  
+  .df-ui-action button:hover {
+    background-color: $fd-uia-background-hover;
+  }
+  
+  .df-uia-primary button {
+    background: $fd-uia-primary-background;
+    border: $fd-uia-primary-border;
+    color: $fd-uia-primary-color;
+  }
+  
+  .df-uia-primary button:hover {
+    background: $fd-uia-primary-background-hover;
+    border: $fd-uia-primary-border-hover;
+    color: $fd-uia-primary-color-hover;
+  }
+}
 
-}</css>
+
+</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -28,24 +130,27 @@
         <internal>false</internal>
         <link/>
         <name>Decorated Form</name>
-        <option_schema>[{"displayValue":"Table","hint":"Table (leave blank to use URL parameter 'table')","name":"table","label":"Table","type":"reference","value":"sys_db_object","ed":{"reference":"sys_db_object"}}]</option_schema>
+        <option_schema>[{"displayValue":"Table","hint":"Table (leave blank to use URL parameter 'table')","name":"table","label":"Table","type":"reference","value":"sys_db_object","ed":{"reference":"sys_db_object"}},{"hint":"The Sys ID of the record in the table","name":"sys_id","default_value":"","label":"Sys ID","type":"string"},{"hint":"The view to use","name":"view","default_value":"","label":"View","type":"string"},{"hint":"Whether to only show the primary UI action","name":"primary_only","default_value":"","label":"Show only primary action","type":"boolean"}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
 	
-	data.debug = $sp.getParameter('debug') === 'true';
-	
-	data.table = options.table || $sp.getParameter('table');
+	if (input) {
+		data.table = input.table;
+		data.sys_id = input.sys_id;
+		data.view = input.view;
+	} else {
+		data.table = options.table || $sp.getParameter('table');
+		data.sys_id = options.sys_id || $sp.getParameter('sys_id') || '-1';
+		data.view = options.view || $sp.getParameter('view') || 'service_portal';
+	}
 	
 	if (!data.table) {
 		gs.addErrorMessage('<strong>Error:</strong> there was no table name supplied for this form');
 	}
 	
-	data.sys_id = options.sys_id || $sp.getParameter('sys_id') || '-1';
-	data.view = options.view || $sp.getParameter('view') || 'service_portal';
-	
 	var $fd = new FormDecoratorAPI($sp);
-	data.form = $fd.getDecoratedForm(data.table, data.sys_id, null, data.view);
+	data.form = $fd.getDecoratedForm(data.table, data.sys_id, null, data.view, options.primary_only);
 	
 })();]]></script>
         <servicenow>false</servicenow>
@@ -54,7 +159,7 @@
         <sys_created_on>2017-07-23 06:58:35</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>be775ff24f8443003b3028201310c739</sys_id>
-        <sys_mod_count>68</sys_mod_count>
+        <sys_mod_count>144</sys_mod_count>
         <sys_name>Decorated Form</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
@@ -62,35 +167,22 @@
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sp_widget_be775ff24f8443003b3028201310c739</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-08-31 04:55:37</sys_updated_on>
+        <sys_updated_on>2017-09-01 05:02:39</sys_updated_on>
         <template><![CDATA[<div class="pe-decorated-form">
 	<sp-model g-form-capture
             form-model="c.data.form"
             template-url="pe-decorated-form"
             mandatory="true"></sp-model>
+  
   <!-- UI Actions -->
-  <div class="df-ui-action" ng-repeat="action in c.data.form._ui_actions">
-    <button>{{::action.name}}</button>
+  <div class="df-ui-actions">
+    <div class="df-ui-action"
+         ng-class="{'df-uia-primary': action.primary}"
+         ng-repeat="action in c.data.form._ui_actions">
+      <button ng-click="triggerUIAction(action)">{{::action.name}}</button>
+    </div>
   </div>
   
-  <div ng-if="c.data.debug">
-    <h1>Debug</h1>
-    <div class="row">
-      <div class="col-sm-6">
-        <table class="table">
-          <thead>
-            <tr><th>Column Name</th><th>Directive</th></tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="(key, value) in c.data.form._fields">
-              <td>{{key}}</td><td>{{value.directive}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    
-  </div>
 </div>]]></template>
     </sp_widget>
 </record_update>

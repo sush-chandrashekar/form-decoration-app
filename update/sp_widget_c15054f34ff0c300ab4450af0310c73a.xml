@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sp_widget">
+    <sp_widget action="INSERT_OR_UPDATE">
+        <client_script><![CDATA[function() {
+  /* widget controller */
+  var c = this;
+}]]></client_script>
+        <controller_as>c</controller_as>
+        <css>.df-debug {
+  font-size: 13px;
+  
+  thead {
+    font-size: 15px;
+  }
+  
+  table table {
+    font-size: 10px;
+    
+    td {
+      padding: 1px;
+    }
+    
+    thead {font-size: 10px; }
+    
+  }
+}
+
+.df-val {
+  background-color: rgba(255,0,0,0.01);
+}</css>
+        <data_table>sp_instance</data_table>
+        <demo_data/>
+        <description/>
+        <docs/>
+        <field_list/>
+        <has_preview>false</has_preview>
+        <id>pe-decorated-form-debug</id>
+        <internal>false</internal>
+        <link/>
+        <name>Decorated Form (debug)</name>
+        <option_schema/>
+        <public>false</public>
+        <roles/>
+        <script><![CDATA[(function() {
+	data.widget = $sp.getWidget('pe-decorated-form');
+})();]]></script>
+        <servicenow>false</servicenow>
+        <sys_class_name>sp_widget</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2017-09-01 01:49:29</sys_created_on>
+        <sys_customer_update>false</sys_customer_update>
+        <sys_id>c15054f34ff0c300ab4450af0310c73a</sys_id>
+        <sys_mod_count>33</sys_mod_count>
+        <sys_name>Decorated Form (debug)</sys_name>
+        <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
+        <sys_update_name>sp_widget_c15054f34ff0c300ab4450af0310c73a</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2017-09-01 02:50:18</sys_updated_on>
+        <template><![CDATA[<div>
+  <sp-widget widget="c.data.widget"></sp-widget>
+  <div class="df-debug">
+    <h1>Debug</h1>
+    <div class="row">
+      <div class="col-sm-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>name</th>
+              <th>label</th>
+              <th>directive</th>
+              <th>isReadonly()</th>
+              <th>isMandatory()</th>
+              <th>max_length</th>
+              <th>visible</th>
+              <th>choices</th>
+              <th class="df-val">stagedValue</th>
+              <th class="df-val">value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="(key, value) in c.data.widget.data.form._fields">
+              <th>{{key}}</th>
+              <td>{{value.label}}</td>
+              <td>{{value.directive}}</td>
+              <td>{{value.isReadonly()}}</td>
+              <td>{{value.isMandatory()}}</td>
+              <td>{{value.max_length}}</td>
+              <td>{{value.visible}}</td>
+              <td>
+                <table class="table-condensed" ng-if="value.choices">
+                  <thead>
+                    <tr>
+                      <th>Label</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="choice in value.choices">
+                      <td>{{choice.label}}</td>
+                      <td>{{choice.value}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td class="df-val">{{value.stagedValue}}</td>
+              <td class="df-val">{{value.value}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>]]></template>
+    </sp_widget>
+</record_update>

@@ -21,13 +21,50 @@
   margin-left: 5px;&#13;
   margin-right: 5px;&#13;
 }&#13;
-.fd-ex-checkbox {&#13;
+.fd-ex-yn button {&#13;
+  height: 40px;&#13;
+  border: 3px solid #C4D0D6;&#13;
+  border-radius: 8px;&#13;
+  background-color: #F9FDFF;&#13;
+  width: 100%;&#13;
+}&#13;
+button.fd-ex-yn-active {&#13;
+  background-color: #305497;&#13;
+  color: white;&#13;
+}&#13;
 &#13;
+.fd-ex-checkbox input {&#13;
+	display: none;&#13;
+}&#13;
+&#13;
+.fd-ex-checkbox label {&#13;
+  padding-left: 35px;&#13;
+	position: relative;&#13;
+  line-height: 30px;&#13;
+  cursor: pointer;&#13;
+  font-size: 15px;&#13;
+}&#13;
+&#13;
+.fd-ex-checkbox label span {&#13;
+  display: inline-block;&#13;
+  border: 3px solid #C4D0D6;&#13;
+  border-radius: 8px;&#13;
+  background-color: #F9FDFF;&#13;
+  width: 28px;&#13;
+  height: 28px;&#13;
+  position: absolute;&#13;
+  left: 0;&#13;
+  top: 0;&#13;
+}&#13;
+&#13;
+.fd-ex-checkbox input:checked + label &gt; span {&#13;
+  background-color: #305497;&#13;
 }&#13;
 &#13;
 .fd-ex-label {&#13;
   font-weight: bold;&#13;
   display: block;&#13;
+  min-height: 20px;&#13;
 }&#13;
 &#13;
 &#13;
@@ -46,7 +83,7 @@
         <sys_created_on>2017-08-31 04:26:03</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>c18a275f4ff8830022f40ccf0310c77c</sys_id>
-        <sys_mod_count>28</sys_mod_count>
+        <sys_mod_count>48</sys_mod_count>
         <sys_name>formDec - Example Directives</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
@@ -54,6 +91,6 @@
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sp_css_c18a275f4ff8830022f40ccf0310c77c</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-08-31 06:46:44</sys_updated_on>
+        <sys_updated_on>2017-09-01 05:30:04</sys_updated_on>
     </sp_css>
 </record_update>
