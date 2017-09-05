@@ -19,7 +19,7 @@ FormDecoratorAPI.prototype = {
 		var portal = this.$sp.getPortalRecord();
 		
 		var form = this.$sp.getForm(table, sys_id, encodedQuery, view);
-		form._decorators = {};
+		form._directives = {};
 		
 		var heirarchy = new GlideTableHierarchy(table).getHierarchy(); 
 		
@@ -29,13 +29,24 @@ FormDecoratorAPI.prototype = {
 			.addOrCondition('portal', '');
 		gr.query();
 		
+		
+		
 		while (gr.next()) {
-			var directive = gr.directive.getRefRecord().spinal_case.toString();
+			var directive = gr.directive.getRefRecord();
 			var fieldName = gr.field.getRefRecord().element;
 
 			if (typeof form._fields[fieldName] !== 'undefined') {
-				form._fields[fieldName].directive = directive;
-			}	
+				form._fields[fieldName].directive = {
+					spinal_case: directive.getValue('spinal_case'),
+					name: directive.getValue('name')
+				};
+				form._directives[directive.getValue('name')] = {
+					name: directive.getValue('name'),
+					link: directive.getValue('link'),
+					template: directive.getValue('template'),
+					controller: directive.getValue('controller')
+				};
+			}
 		}
 		
 		
@@ -82,14 +93,14 @@ FormDecoratorAPI.prototype = {
         <sys_created_on>2017-07-23 11:45:30</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>f787d4034f0843003b3028201310c78c</sys_id>
-        <sys_mod_count>50</sys_mod_count>
+        <sys_mod_count>57</sys_mod_count>
         <sys_name>FormDecoratorAPI</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy>read</sys_policy>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sys_script_include_f787d4034f0843003b3028201310c78c</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-09-01 04:46:41</sys_updated_on>
+        <sys_updated_by>dylan.lindgren@snc</sys_updated_by>
+        <sys_updated_on>2017-09-05 07:18:09</sys_updated_on>
     </sys_script_include>
 </record_update>

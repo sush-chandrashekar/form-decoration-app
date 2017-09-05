@@ -50,15 +50,15 @@
         <sys_created_on>2017-09-01 01:49:29</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>c15054f34ff0c300ab4450af0310c73a</sys_id>
-        <sys_mod_count>33</sys_mod_count>
+        <sys_mod_count>38</sys_mod_count>
         <sys_name>Decorated Form (debug)</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sp_widget_c15054f34ff0c300ab4450af0310c73a</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-09-01 02:50:18</sys_updated_on>
+        <sys_updated_by>dylan.lindgren@snc</sys_updated_by>
+        <sys_updated_on>2017-09-05 07:05:31</sys_updated_on>
         <template><![CDATA[<div>
   <sp-widget widget="c.data.widget"></sp-widget>
   <div class="df-debug">
@@ -71,9 +71,7 @@
               <th>name</th>
               <th>label</th>
               <th>directive</th>
-              <th>isReadonly()</th>
-              <th>isMandatory()</th>
-              <th>max_length</th>
+              <th>attributes</th>
               <th>visible</th>
               <th>choices</th>
               <th class="df-val">stagedValue</th>
@@ -84,10 +82,12 @@
             <tr ng-repeat="(key, value) in c.data.widget.data.form._fields">
               <th>{{key}}</th>
               <td>{{value.label}}</td>
-              <td>{{value.directive}}</td>
-              <td>{{value.isReadonly()}}</td>
-              <td>{{value.isMandatory()}}</td>
-              <td>{{value.max_length}}</td>
+              <td>{{value.directive.name}}</td>
+              <td>
+                isReadonly(): {{value.isReadonly()}}<br />
+              	isMandatory(): {{value.isMandatory()}}<br />
+                max_length: {{value.max_length}}
+              </td>
               <td>{{value.visible}}</td>
               <td>
                 <table class="table-condensed" ng-if="value.choices">

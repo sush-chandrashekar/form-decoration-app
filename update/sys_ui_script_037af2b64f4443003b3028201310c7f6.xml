@@ -6,29 +6,58 @@
         <global>false</global>
         <name>x_snc_formdec.formDec</name>
         <script><![CDATA[angular.module('formDec', [])
-.controller('fdFieldCtrl', function ($element, $scope) {
+.factory('fdFieldService', function (lazyLoader, $injector) {
 	'use strict';
 	
-	$scope.focusHandler = function() {
-		console.log('hasFocus');
-		$scope.hasFocus = true;
-		$scope.$emit("sp.spFormField.focus", $element, $scope.inputField);
-	};
+	function loadDirective (directiveName, options) {
+		
+		lazyLoader.directive(directiveName, function($injector) {
 
-	$scope.blurHandler = function() {
-		console.log('hasBlur');
-		$scope.fieldValue($scope.field.stagedValue);
-		$scope.hasFocus = false;
-		$scope.$emit("sp.spFormField.blur", $element, $scope.inputField);
+			var api = {
+				restrict: 'E',
+				replace: false
+			};
+			
+			if (options.template)
+				api.template = options.template;
+			
+			if (options.controller) {
+				eval('api.controller=' + options.controller);
+			}
+			
+			api.link = function(scope, elem, attr, ctrl) {
+                var link;
+                if (options.link) {
+                    eval('link=' + options.link);
+                    if (link) {
+                        link(scope, elem, attr, ctrl);
+                    }
+                }
+            };
+		
+			return api;
+		});
+	}
+	
+	return {
+		loadDirective: loadDirective
 	};
+	
 	
 })
-.directive('fdFormField', function ($compile) {
+.directive('fdFormField', function ($compile, fdFieldService) {
 	'use strict';
+	
+	
 	
 	var link = function (scope, elem, attrs, ctrl) {
 		
-		var directive = scope.formModel._fields[scope.field.name].directive;
+		var directiveName = scope.formModel._fields[scope.field.name].directive.name;
+		var directiveOptions = scope.formModel._directives[directiveName];
+		
+		fdFieldService.loadDirective(directiveName, directiveOptions);
+		
+		var directive = scope.formModel._fields[scope.field.name].directive.spinal_case;
 		
 		var el = angular.element("<" + directive + "></" + directive + ">");
 		elem.find('.fd-form-field').append(el);
@@ -77,7 +106,6 @@
 		};
 
 		$scope.fieldValue = function(newValue, displayValue) {
-			console.log(newValue, displayValue);
 			
 			$scope.hasChanged = true;
 			if (!field.readonly && angular.isDefined(newValue)) {
@@ -108,15 +136,15 @@
         <sys_created_on>2017-07-23 04:53:00</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>037af2b64f4443003b3028201310c7f6</sys_id>
-        <sys_mod_count>68</sys_mod_count>
+        <sys_mod_count>79</sys_mod_count>
         <sys_name>x_snc_formdec.formDec</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sys_ui_script_037af2b64f4443003b3028201310c7f6</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-08-31 05:41:37</sys_updated_on>
+        <sys_updated_by>dylan.lindgren@snc</sys_updated_by>
+        <sys_updated_on>2017-09-05 07:27:06</sys_updated_on>
         <use_scoped_format>false</use_scoped_format>
     </sys_ui_script>
 </record_update>
