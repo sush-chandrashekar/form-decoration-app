@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
-        <client_script><![CDATA[function($scope, $timeout) {
+        <client_script><![CDATA[function($scope, $timeout, $location) {
   var c = this;
 	
 	// Grab GlideForm once it's been initialized
-	
 	var g_form;
 	
 	$scope.$on('spModel.gForm.initialized', function(e, gFormInstance) {
@@ -14,7 +13,6 @@
 	});
 	
 	// Trigger a UI Action
-	
 	$scope.triggerUIAction = function(action) {
 
 		$timeout(function() {
@@ -30,9 +28,16 @@
 		var sysID = (response.isInsert) ? response.sys_id : $scope.data.sys_id;
 		reloadForm($scope.data.table, sysID).then(function () {
 			$rootScope.$broadcast('sp.form.record.updated', $scope.data.form._fields);
+			if (response.isInsert) {
+				var search = $location.search();
+				search.sys_id = response.sys_id;
+				search.spa = 1;
+				$location.search(search).replace();
+			}
 		});
 	});
 	
+	// Reload the form to show the record supplied in the parameters
 	function reloadForm(table, sys_id){
 		var f = {};
 		$scope.data.table = f.table = table;
@@ -43,13 +48,17 @@
 
 }]]></client_script>
         <controller_as>c</controller_as>
-        <css>$fd-ff-margin: 10px 10px 10px 10px !default;
+        <css>// Margin between form fields
+$fd-ff-margin: 10px 10px 10px 10px !default;
 
+// UI Action container styles
 $fd-ui-actions-margin: 30px 0px; !default;
 $fd-ui-actions-text-align: center !default;
 
+// Margin between UI Actions
 $fd-uia-margin: 10px !default;
 
+// UI Action styles
 $fd-uia-border-radius: 8px !default;
 $fd-uia-border: 3px solid #C4D0D6 !default;
 $fd-uia-background: #fff !default;
@@ -59,14 +68,17 @@ $fd-uia-min-height: 40px !default;
 $fd-uia-min-width: 40px !default;
 $fd-uia-font-size: 18px !default;
 
+// UI Action hover styles
 $fd-uia-background-hover: #F9FDFF; !default;
 $fd-uia-border-hover: 3px solid #C4D0D6 !default;
 $fd-uia-color-hover: #000 !default;
 
+// Primary UI Action styles
 $fd-uia-primary-background: #da1a40 !default;
 $fd-uia-primary-border: 3px solid #da1a40 !default;
 $fd-uia-primary-color: #fff !default;
 
+// Primary UI Action hover styles
 $fd-uia-primary-background-hover: #fd3056 !default;
 $fd-uia-primary-border-hover: 3px solid #da1a40 !default;
 $fd-uia-primary-color-hover: #fff !default;
@@ -92,7 +104,6 @@ $fd-uia-primary-color-hover: #fff !default;
   
   .df-ui-action button {
     cursor: pointer;
-    
     border: $fd-uia-border;
     border-radius: $fd-uia-border-radius;
     background: $fd-uia-background;
@@ -116,10 +127,7 @@ $fd-uia-primary-color-hover: #fff !default;
     border: $fd-uia-primary-border-hover;
     color: $fd-uia-primary-color-hover;
   }
-}
-
-
-</css>
+}</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -130,27 +138,66 @@ $fd-uia-primary-color-hover: #fff !default;
         <internal>false</internal>
         <link/>
         <name>Decorated Form</name>
-        <option_schema>[{"displayValue":"Table","hint":"Table (leave blank to use URL parameter 'table')","name":"table","label":"Table","type":"reference","value":"sys_db_object","ed":{"reference":"sys_db_object"}},{"hint":"The Sys ID of the record in the table","name":"sys_id","default_value":"","label":"Sys ID","type":"string"},{"hint":"The view to use","name":"view","default_value":"","label":"View","type":"string"},{"hint":"Whether to only show the primary UI action","name":"primary_only","default_value":"","label":"Show only primary action","type":"boolean"}]</option_schema>
+        <option_schema>[{"displayValue":"Table","hint":"Table (leave blank to use URL parameter 'table')","name":"table","label":"Table","type":"reference","value":"sys_db_object","ed":{"reference":"sys_db_object"}},{"hint":"The Sys ID of the record in the table","name":"sys_id","default_value":"","label":"Sys ID","type":"string"},{"hint":"The view to use","name":"view","default_value":"","label":"View","type":"string"},{"hint":"Whether to only show the primary UI action","name":"primary_only","default_value":"","label":"Show only primary action","type":"boolean"},{"name":"show_headings","default_value":"","label":"Show section headings","type":"boolean"}]</option_schema>
         <public>false</public>
         <roles/>
         <script><![CDATA[(function() {
 	
+	// Translations
+	data.i18n = {
+		error_message: gs.getMessage("Cannot load form"),
+		error_direction: gs.getMessage("Please correct the errors below:"),
+		no_table_supplied: gs.getMessage("There was no table name supplied for this form."),
+		table_no_exist: gs.getMessage("That table does not exist."),
+		record_no_exist: gs.getMessage("That record does not exist.")
+	};
+	
 	if (input) {
+		// If we're reloading the form after UI Action processing...
 		data.table = input.table;
 		data.sys_id = input.sys_id;
 		data.view = input.view;
+		data.show_headings = input.show_headings;
+		data.primary_only = input.primary_only;
 	} else {
+		// Otherwise get config from options/URL
 		data.table = options.table || $sp.getParameter('table');
 		data.sys_id = options.sys_id || $sp.getParameter('sys_id') || '-1';
 		data.view = options.view || $sp.getParameter('view') || 'service_portal';
+		data.show_headings = options.show_headings || true;
+		data.primary_only = options.primary_only || false;
+	}
+	
+	// Check for errors before going further
+	data.errors = [];
+	
+	function addError(message) {
+		data.errors.push(message);
+		data.hasError = true;
 	}
 	
 	if (!data.table) {
-		gs.addErrorMessage('<strong>Error:</strong> there was no table name supplied for this form');
+		addError(data.i18n.no_table_supplied);
+		return;
 	}
 	
+	var gr = new GlideRecord(data.table);
+	
+	if (!gr.isValid()) {
+		addError(data.i18n.table_no_exist);
+		return;
+	}
+	
+	if ((data.sys_id !== '-1') && (!gr.get(data.sys_id))) {
+		addError(data.i18n.record_no_exist);
+		return;
+	}
+	
+	// No errors, let's proceed!
+	
+	// Get the form model, with the additional properties supplied by the FormDecoratorAPI
 	var $fd = new FormDecoratorAPI($sp);
-	data.form = $fd.getDecoratedForm(data.table, data.sys_id, null, data.view, options.primary_only);
+	data.form = $fd.getDecoratedForm(data.table, data.sys_id, null, data.view, data.primary_only);
 	
 })();]]></script>
         <servicenow>false</servicenow>
@@ -159,30 +206,46 @@ $fd-uia-primary-color-hover: #fff !default;
         <sys_created_on>2017-07-23 06:58:35</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>be775ff24f8443003b3028201310c739</sys_id>
-        <sys_mod_count>144</sys_mod_count>
+        <sys_mod_count>193</sys_mod_count>
         <sys_name>Decorated Form</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
         <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sp_widget_be775ff24f8443003b3028201310c739</sys_update_name>
-        <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2017-09-01 05:02:39</sys_updated_on>
+        <sys_updated_by>dylan.lindgren@snc</sys_updated_by>
+        <sys_updated_on>2017-09-06 01:35:55</sys_updated_on>
         <template><![CDATA[<div class="pe-decorated-form">
-	<sp-model g-form-capture
-            form-model="c.data.form"
-            template-url="pe-decorated-form"
-            mandatory="true"></sp-model>
   
-  <!-- UI Actions -->
-  <div class="df-ui-actions">
-    <div class="df-ui-action"
-         ng-class="{'df-uia-primary': action.primary}"
-         ng-repeat="action in c.data.form._ui_actions">
-      <button ng-click="triggerUIAction(action)">{{::action.name}}</button>
+  <!-- If no errors -->
+  <div ng-if="!c.data.errors.length">
+    
+    <!-- Form -->
+    <sp-model form-model="c.data.form"
+              template-url="pe-decorated-form"
+              mandatory="true"></sp-model>
+    
+    <!-- UI Actions -->
+    <div class="df-ui-actions">
+      <div class="df-ui-action"
+           ng-class="{'df-uia-primary': action.primary}"
+           ng-repeat="action in c.data.form._ui_actions">
+        <button ng-click="triggerUIAction(action)">{{::action.name}}</button>
+      </div>
     </div>
+    
   </div>
   
+  <!-- If errors -->
+  <div ng-if="c.data.errors.length">
+    <div class="alert alert-danger">
+     <strong>{{::data.i18n.error_message}}</strong>
+      <p>{{::data.i18n.error_direction}}</p>
+      <ul>
+        <li ng-repeat="error in c.data.errors">{{::error}}</li>
+      </ul>
+    </div>
+  </div>
 </div>]]></template>
     </sp_widget>
 </record_update>

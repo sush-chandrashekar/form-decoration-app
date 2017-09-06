@@ -2,7 +2,7 @@
 <record_update table="sp_ng_template">
     <sp_ng_template action="INSERT_OR_UPDATE">
         <id>pe-decorated-rp</id>
-        <sp_widget display_value="Decorated Record Producer">7af284974fcc43003b3028201310c7ac</sp_widget>
+        <sp_widget/>
         <sys_class_name>sp_ng_template</sys_class_name>
         <sys_created_by>dylan.lindgren</sys_created_by>
         <sys_created_on>2017-07-24 05:35:06</sys_created_on>

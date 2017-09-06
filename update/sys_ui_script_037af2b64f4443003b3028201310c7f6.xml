@@ -6,8 +6,30 @@
         <global>false</global>
         <name>x_snc_formdec.formDec</name>
         <script><![CDATA[angular.module('formDec', [])
-.factory('fdFieldService', function (lazyLoader, $injector) {
+.factory('fdFieldService', function (lazyLoader, $injector, $document) {
 	'use strict';
+	
+	var head = $document[0].head || $document[0].getElementsByTagName('head')[0];
+	
+	function addElement(options) {
+        var el = $document[0].createElement('style');
+        el.type = 'text/css';
+        if (options.id)
+            el.setAttribute('id', options.id);
+        if (options.directive)
+            el.setAttribute('df-directive', options.directive);
+        if (el.styleSheet)
+            el.styleSheet.cssText = options.css;
+        else
+            el.appendChild($document[0].createTextNode(options.css));
+        return el;
+    }
+	
+	function loadCSS(directiveName, options) {
+        var id = options.id + '-s';
+		if (options.css && !$document.find('head #' + directiveName).length)
+			head.appendChild(addElement({ css: options.css, id: id, directive: directiveName }));
+    }
 	
 	function loadDirective (directiveName, options) {
 		
@@ -20,6 +42,9 @@
 			
 			if (options.template)
 				api.template = options.template;
+			
+			if (options.css)
+				loadCSS(directiveName, options);
 			
 			if (options.controller) {
 				eval('api.controller=' + options.controller);
@@ -48,8 +73,6 @@
 .directive('fdFormField', function ($compile, fdFieldService) {
 	'use strict';
 	
-	
-	
 	var link = function (scope, elem, attrs, ctrl) {
 		
 		var directiveName = scope.formModel._fields[scope.field.name].directive.name;
@@ -57,9 +80,9 @@
 		
 		fdFieldService.loadDirective(directiveName, directiveOptions);
 		
-		var directive = scope.formModel._fields[scope.field.name].directive.spinal_case;
+		var spinalCase = scope.formModel._fields[scope.field.name].directive.spinal_case;
 		
-		var el = angular.element("<" + directive + "></" + directive + ">");
+		var el = angular.element("<" + spinalCase + ' class="df_' + directiveName + '"></' + spinalCase + ">");
 		elem.find('.fd-form-field').append(el);
 		$compile(el)(scope);
 	};
@@ -136,7 +159,7 @@
         <sys_created_on>2017-07-23 04:53:00</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>037af2b64f4443003b3028201310c7f6</sys_id>
-        <sys_mod_count>79</sys_mod_count>
+        <sys_mod_count>97</sys_mod_count>
         <sys_name>x_snc_formdec.formDec</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
@@ -144,7 +167,7 @@
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sys_ui_script_037af2b64f4443003b3028201310c7f6</sys_update_name>
         <sys_updated_by>dylan.lindgren@snc</sys_updated_by>
-        <sys_updated_on>2017-09-05 07:27:06</sys_updated_on>
+        <sys_updated_on>2017-09-06 01:27:42</sys_updated_on>
         <use_scoped_format>false</use_scoped_format>
     </sys_ui_script>
 </record_update>

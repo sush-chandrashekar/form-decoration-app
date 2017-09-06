@@ -15,6 +15,60 @@
 	};
 
 }]]&gt;&lt;/controller&gt;
+        &lt;css&gt;.fd-ex-checkbox input {&amp;#13;
+	display: none;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.fd-ex-checkbox label {&amp;#13;
+  padding-left: 35px;&amp;#13;
+	position: relative;&amp;#13;
+  line-height: 30px;&amp;#13;
+  cursor: pointer;&amp;#13;
+  font-size: 15px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.fd-ex-checkbox label span {&amp;#13;
+  display: inline-block;&amp;#13;
+  border: 3px solid #C4D0D6;&amp;#13;
+  border-radius: 8px;&amp;#13;
+  background-color: #F9FDFF;&amp;#13;
+  width: 28px;&amp;#13;
+  height: 28px;&amp;#13;
+  position: absolute;&amp;#13;
+  left: 0;&amp;#13;
+  top: 0;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.fd-ex-checkbox input:checked + label &amp;gt; span {&amp;#13;
+  background-color: #305497;&amp;#13;
+}&lt;/css&gt;
+        &lt;css_scoped&gt;.df_fdExampleCheckboxField .fd-ex-checkbox input {&amp;#13;
+	display: none;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.df_fdExampleCheckboxField .fd-ex-checkbox label {&amp;#13;
+  padding-left: 35px;&amp;#13;
+	position: relative;&amp;#13;
+  line-height: 30px;&amp;#13;
+  cursor: pointer;&amp;#13;
+  font-size: 15px;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.df_fdExampleCheckboxField .fd-ex-checkbox label span {&amp;#13;
+  display: inline-block;&amp;#13;
+  border: 3px solid #C4D0D6;&amp;#13;
+  border-radius: 8px;&amp;#13;
+  background-color: #F9FDFF;&amp;#13;
+  width: 28px;&amp;#13;
+  height: 28px;&amp;#13;
+  position: absolute;&amp;#13;
+  left: 0;&amp;#13;
+  top: 0;&amp;#13;
+}&amp;#13;
+&amp;#13;
+.df_fdExampleCheckboxField .fd-ex-checkbox input:checked + label &amp;gt; span {&amp;#13;
+  background-color: #305497;&amp;#13;
+}&lt;/css_scoped&gt;
         &lt;description/&gt;
         &lt;link&gt;&lt;![CDATA[function fdExampleCheckboxFieldLink (scope, elem, attrs, ctrl) {
 	
@@ -26,9 +80,9 @@
         &lt;sys_created_by&gt;admin&lt;/sys_created_by&gt;
         &lt;sys_created_on&gt;2017-08-30 07:12:35&lt;/sys_created_on&gt;
         &lt;sys_id&gt;9a178b834ff08300ab4450af0310c729&lt;/sys_id&gt;
-        &lt;sys_mod_count&gt;9&lt;/sys_mod_count&gt;
+        &lt;sys_mod_count&gt;12&lt;/sys_mod_count&gt;
         &lt;sys_updated_by&gt;dylan.lindgren@snc&lt;/sys_updated_by&gt;
-        &lt;sys_updated_on&gt;2017-09-05 07:24:00&lt;/sys_updated_on&gt;
+        &lt;sys_updated_on&gt;2017-09-06 01:29:39&lt;/sys_updated_on&gt;
         &lt;template&gt;&lt;![CDATA[&lt;div class="fd-ex-checkbox"
      ng-class="{'fd-ex-mandatory': field.mandatory}"
      ng-show="field.visible"&gt;
@@ -90,7 +144,7 @@
         <sys_created_on>2017-08-30 07:21:30</sys_created_on>
         <sys_customer_update>false</sys_customer_update>
         <sys_id>b4298fc34ff08300ab4450af0310c7be</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>fdExampleCheckboxField</sys_name>
         <sys_package display_value="Form Decoration" source="x_snc_formdec">0e3afa364f4443003b3028201310c742</sys_package>
         <sys_policy/>
@@ -98,7 +152,7 @@
         <sys_scope display_value="Form Decoration">0e3afa364f4443003b3028201310c742</sys_scope>
         <sys_update_name>sys_metadata_link_b4298fc34ff08300ab4450af0310c7be</sys_update_name>
         <sys_updated_by>dylan.lindgren@snc</sys_updated_by>
-        <sys_updated_on>2017-09-05 07:27:43</sys_updated_on>
+        <sys_updated_on>2017-09-06 01:48:35</sys_updated_on>
         <tablename>x_snc_formdec_directive</tablename>
     </sys_metadata_link>
 </record_update>
